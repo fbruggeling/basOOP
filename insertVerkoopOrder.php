@@ -9,7 +9,7 @@
 		<input type="Date" name="Datum" placeholder="Date" required> *</br>
 		<input type="text" name="Aantal" placeholder="aantal" required> *</br></br>
         <input type="text" name="Status" placeholder="status" required> *</br></br>
-		<input type="submit" name="submit" value="Klant toevoegen">
+		<input type="submit" name="submit" value="Verkooporder toevoegen">
 	</form>
 
 	<a href="index.php">Terug naar de hoofdpagina</a>
