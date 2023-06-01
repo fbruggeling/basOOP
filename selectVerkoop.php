@@ -1,7 +1,7 @@
 <?php
 
 include "conn.php";
-include "include/verkoop.php";
+include "classes/verkoop.php";
 
 $conn = dbConnect();
 $verkoop = new Verkoop();
