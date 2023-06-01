@@ -18,7 +18,7 @@
 
 	if(isset($_POST['submit'])){
 		include "conn.php";
-		include 'include/klant.php';
+		include 'classes/klant.php';
 		$conn = dbConnect();
 
 		$naam = $_POST['klantNaam'];

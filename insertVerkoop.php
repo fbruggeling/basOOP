@@ -1,61 +1,44 @@
-<!DOCTYPE html>
-<html>
-<body>
-	<h1>Voeg verkoop order toe</h1>
+<?php
 
-	<form action="insertVerkoop.php" method="post">
-		<input type="text" name="klantId" placeholder="Klant ID" required> *</br>
-		<input type="text" name="artId" placeholder="Artikel ID"required> *</br>
-		<input type="text" name="verkOrdBestAantal" placeholder="Aantal" required> *</br>
-		<input type="submit" name="submit" value="Verkoop order toevoegen">
-	</form>
+include "conn.php";
+include "classes/VerkooporderForm.php";
+include 'classes/verkoop.php';
+$conn = dbConnect();
 
-	<h1>Voeg producten aan verkooporder toe</h1>
+$db = new Database();
+$form = new VerkooporderForm($db);
+$form->generateForm();
 
-	<form action="insertVerkoop.php" method="post">
-		<input type="text" name="klantId" placeholder="Klant ID" required> *</br>
-		<input type="text" name="artId" placeholder="Artikel ID"required> *</br>
-		<input type="text" name="verkOrdBestAantal" placeholder="Aantal" required> *</br>
-		<input type="submit" name="artikel" value="Product toevoegen">
-	</form>
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    // Retrieve form data
+    $klantId = $_POST["klant"];
+    $artId = $_POST["artikel"];
+    $aantal = $_POST["aantal"];
 
-	<a href="index.php">Terug naar de hoofdpagina</a>
+    $verkoop = new Verkoop();
+    $verkoop->insertVerkoop($conn, $klantId, $artId, $aantal);
 
-	<?php 
+}
 
-	if(isset($_POST['submit'])){
-		include "conn.php";
-		include 'include/verkoop.php';
-		$conn = dbConnect();
+	//if(isset($_POST['submit'])){
+	//	include "conn.php";
+	//	include 'classes/verkoop.php';
+	//	$conn = dbConnect();
 
 
-		$klantId = $_POST['klantId'];
-		$artId = $_POST['artId'];
-		$aantal = $_POST['verkOrdBestAantal'];
-
-		$verkoop = new Verkoop();
-		$verkoop->insertVerkoop($conn, $klantId, $artId, $aantal);
-	}
-
-	if(isset($_POST['artikel'])){
-		include "conn.php";
-		include 'include/verkoop.php';
-		$conn = dbConnect();
 
 
-		$klantId = $_POST['klantId'];
-		$artId = $_POST['artId'];
-		$aantal = $_POST['verkOrdBestAantal'];
+		//$klantId = $_POST['$klant[klantId]'];
+		//$artId = $_POST['artId'];
+		//$aantal = $_POST['Aantal'];
 
-		$verkoop = new Verkoop();
-		$verkoop->insertVerkoop($conn, $klantId, $artId, $aantal);
-	}
+		//$verkoop = new Verkoop();
+		//$verkoop->insertVerkoop($conn, $klantId, $artId, $aantal);
+	//}
 
 	if(isset($verkoop) && $verkoop == true){
-		echo '<script>alert("Klant toegevoegd")</script>';
+		echo '<script>alert("VerkoopOrder toegevoegd")</script>';
         echo "<script> location.replace('index.php'); </script>";
-	} 
+	}
 
-	?>
-</body>
-</html>
+?>
