@@ -1,22 +1,22 @@
 <?php
 
 include "conn.php";
-include "classes/VerkooporderForm.php";
-include 'classes/verkoop.php';
+include "classes/InkooporderForm.php";
+include 'classes/inkoop.php';
 $conn = dbConnect();
 
 $db = new Database();
-$form = new VerkooporderForm($db);
+$form = new InkooporderForm($db);
 $form->generateForm();
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     // Retrieve form data
-    $klantId = $_POST["klant"];
+    $levId = $_POST["leverancier"];
     $artId = $_POST["artikel"];
     $aantal = $_POST["aantal"];
 
-    $verkoop = new Verkoop();
-    $verkoop->insertVerkoop($conn, $klantId, $artId, $aantal);
+    $inkoop = new Inkoop();
+    $inkoop->insertInkoop($conn, $levId, $artId, $aantal);
 
 }
 
@@ -36,8 +36,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 		//$verkoop->insertVerkoop($conn, $klantId, $artId, $aantal);
 	//}
 
-	if(isset($verkoop) && $verkoop == true){
-		echo '<script>alert("VerkoopOrder toegevoegd")</script>';
+	if(isset($inkoop) && $inkoop == true){
+		echo '<script>alert("InkoopOrder toegevoegd")</script>';
         echo "<script> location.replace('index.php'); </script>";
 	}
 

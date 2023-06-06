@@ -1,14 +1,14 @@
 <?php
 include "Database.php";
-class VerkooporderForm
+class InkooporderForm
 {
     private $db;
 
     public function __construct(Database $db) {
         $this->db = $db;
     }
-    public function getKlanten() {
-        $query = "SELECT * FROM klanten";
+    public function getLeveranciers() {
+        $query = "SELECT * FROM leveranciers";
         $result = $this->db->executeQuery($query);
         return $this->db->fetchAll($result);
     }
@@ -20,16 +20,16 @@ class VerkooporderForm
     }
 
     public function generateForm() {
-        $klanten = $this->getKlanten();
+        $leveranciers = $this->getLeveranciers();
         $artikelen = $this->getArtikelen();
 
-        echo "<h1>Verkooporders toevoegen</h1>";
+        echo "<h1>Inkooporders toevoegen</h1>";
 
-        echo "<br><form action='insertVerkoop.php' method='POST'>";
-        echo "<br><label for='klant'>Klant:</label><br>";
-        echo "<br><select name='klant' id='klant'><br>";
-        foreach ($klanten as $klant) {
-            echo "<br><option value='{$klant['klantId']}'>{$klant['klantNaam']}</option><br>";
+        echo "<br><form action='insertInkoop.php' method='POST'>";
+        echo "<br><label for='leverancier'>Leverancier:</label><br>";
+        echo "<br><select name='leverancier' id='leverancier'><br>";
+        foreach ($leveranciers as $leverancier) {
+            echo "<br><option value='{$leverancier['levId']}'>{$leverancier['levNaam']}</option><br>";
         }
         echo "<br></select>";
 
