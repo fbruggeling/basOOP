@@ -1,14 +1,16 @@
 <?php 
 
-class Inkoop{
+include 'Database.php';
 
-	public function insertInkoop($conn, $levId, $artId, $aantal){
+class Inkoop extends Database{
+
+	public function insertInkoop($levId, $artId, $aantal){
 
 		$datum = date("Y-m-d");
 
         $sql = "INSERT INTO inkooporders (levId, artId, inkOrdDatum, inkOrdBestAantal, inkOrdStatus) VALUES ('$levId', '$artId', '$datum', '$aantal', 1 )";
 
-		$stmt = $conn->prepare($sql);
+		$stmt = self::$conn->prepare($sql);
 
         $stmt->execute();
 
@@ -32,7 +34,7 @@ class Inkoop{
 
 		$sql = "DELETE * FROM inkooporders WHERE inkOrdId = '$data'";
 
-		$stmt = $conn->prepare($sql);
+		$stmt = self::$conn->prepare($sql);
 
         $stmt->execute();
 	}

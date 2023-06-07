@@ -1,22 +1,17 @@
 <?php
 include "Database.php";
-class VerkooporderForm
+class VerkooporderForm extends Database
 {
-    private $db;
-
-    public function __construct(Database $db) {
-        $this->db = $db;
-    }
     public function getKlanten() {
         $query = "SELECT * FROM klanten";
-        $result = $this->db->executeQuery($query);
-        return $this->db->fetchAll($result);
+        $result = self::$conn->executeQuery($query);
+        return self::$conn->fetchAll($result);
     }
 
     public function getArtikelen() {
         $query = "SELECT * FROM artikelen";
-        $result = $this->db->executeQuery($query);
-        return $this->db->fetchAll($result);
+        $result = self::$conn->executeQuery($query);
+        return self::$conn->fetchAll($result);
     }
 
     public function generateForm() {

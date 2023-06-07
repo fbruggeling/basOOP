@@ -17,9 +17,9 @@
 	<?php 
 
 	if(isset($_POST['submit'])){
-		include "conn.php";
-		include 'classes/klant.php';
-		$conn = dbConnect();
+		//include "classes/Database.php";
+		include 'classes/Klant.php';
+		//$conn = new Database();
 
 		$naam = $_POST['klantNaam'];
 		$mail = $_POST['klantEmail'];
@@ -28,7 +28,7 @@
 		$woonplaats = $_POST['klantWoonplaats'];
 
 		$klant = new Klant();
-		$klant->insertKlant($conn, $naam, $mail, $adres, $postcode, $woonplaats);
+		$klant->insertKlant($naam, $mail, $adres, $postcode, $woonplaats);
 	}
 
 	if(isset($klant) && $klant == true){

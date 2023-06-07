@@ -1,12 +1,14 @@
 <?php 
 
-class Klant{
+include 'Database.php';
 
-	public function insertKlant($conn, $naam, $mail, $adres, $postcode, $woonplaats){
+class Klant extends Database{
+
+	public function insertKlant($naam, $mail, $adres, $postcode, $woonplaats){
 
         $sql = "INSERT INTO klanten (klantNaam, klantEmail, klantAdres, klantPostcode, klantWoonplaats) VALUES ('$naam', '$mail', '$adres', '$postcode', '$woonplaats')";
 
-		$stmt = $conn->prepare($sql);
+		$stmt = self::$conn->prepare($sql);
 
         $stmt->execute();
 
@@ -18,7 +20,7 @@ class Klant{
 
 		$sql = "SELECT * FROM `klanten`";
 
-		$stmt = $conn->query($sql);
+		$stmt = self::$conn->query($sql);
 
         $klant = $stmt->fetchALL(PDO::FETCH_ASSOC);
 
@@ -30,7 +32,7 @@ class Klant{
 
 		$sql = "SELECT DISTINCT klantNaam FROM klanten";
 
-		$stmt = $conn->query($sql);
+		$stmt = self::$conn->query($sql);
 
         $klanten = $stmt->fetchALL(PDO::FETCH_ASSOC);
 
@@ -41,7 +43,7 @@ class Klant{
 
 		$sql = "SELECT * FROM klanten WHERE klantnaam = '$klant'";
 
-		$stmt = $conn->query($sql);
+		$stmt = self::$conn->query($sql);
 
         $klanten = $stmt->fetchALL(PDO::FETCH_ASSOC);
 
@@ -52,7 +54,7 @@ class Klant{
 
 		$sql = "SELECT klantId FROM klanten";
 
-		$stmt = $conn->query($sql);
+		$stmt = self::$conn->query($sql);
 
         $klanten = $stmt->fetchALL(PDO::FETCH_ASSOC);
 
@@ -63,7 +65,7 @@ class Klant{
 
 		$sql = "SELECT * FROM klanten WHERE `klantId` = '$id'";
 
-		$stmt = $conn->query($sql);
+		$stmt = self::$conn->query($sql);
 
         $klanten = $stmt->fetchALL(PDO::FETCH_ASSOC);
 
@@ -74,7 +76,7 @@ class Klant{
 
 		try{
 			$sql = "DELETE FROM `Klanten` WHERE `klantId` = '$nr'";
-			$stmt = $conn->prepare($sql);
+			$stmt = self::$conn->prepare($sql);
         	$stmt->execute();
 
         	echo '<script>alert("Klant verwijderd")</script>';

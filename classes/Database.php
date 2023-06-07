@@ -5,22 +5,34 @@ class Database {
     private $username = "root";
     private $password = "";
     private $dbname = "bas";
-    private $conn;
+    protected static $conn = NULL;
 
     public function __construct() {
-        $dsn = "mysql:host={$this->host};dbname={$this->dbname}";
-        $options = array(
-            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
-        );
-        $this->conn = new PDO($dsn, $this->username, $this->password, $options);
+        if (!self::$conn) {
+			try{
+				 self::$conn = new PDO ("mysql:host=$this->host;
+						dbname=$this->dbname",
+						$this->username,
+						$this->password) ;
+
+				 self::$conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION) ;
+				 self::$conn->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
+				 //echo "Connectie is gelukt <br />" ;
+			}
+
+			catch(PDOException $e){
+				 echo "Connectie mislukt: " . $e->getMessage() ;
+			}
+		} else {
+			echo "Database is al geconnected<br>";
+		}    
     }
 
-    public function executeQuery($query) {
-        return $this->conn->query($query);
-    }
+    //public function executeQuery($query) {
+    //    return self::$conn->query($query);
+    //}
 
-    public function fetchAll($result) {
-        return $result->fetchAll();
-    }
+    //public function fetchAll($result) {
+    //    return $result->fetchAll();
+    //}
 }

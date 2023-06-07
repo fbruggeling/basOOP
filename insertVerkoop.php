@@ -1,9 +1,7 @@
 <?php
 
-include "conn.php";
 include "classes/InkooporderForm.php";
 include 'classes/inkoop.php';
-$conn = dbConnect();
 
 $db = new Database();
 $form = new InkooporderForm($db);

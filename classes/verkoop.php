@@ -1,14 +1,16 @@
 <?php
 
-class Verkoop{
+include 'Database.php';
 
-	public function insertVerkoop($conn, $klantId, $artId, $aantal){
+class Verkoop extends Database{
+
+	public function insertVerkoop($klantId, $artId, $aantal){
 
 		$datum = date("Y-m-d");
 
         $sql = "INSERT INTO verkooporders (klantId, artId, verkOrdDatum, verkOrdBestAantal, verkOrdStatus) VALUES ('$klantId', '$artId', '$datum', '$aantal', 1 )";
 
-		$stmt = $conn->prepare($sql);
+		$stmt = self::$conn->prepare($sql);
 
         $stmt->execute();
 
@@ -20,7 +22,7 @@ class Verkoop{
 
 		$sql = "SELECT * FROM `verkooporders`";
 
-		$stmt = $conn->query($sql);
+		$stmt = self::$conn->query($sql);
 
         $verkoop = $stmt->fetchALL(PDO::FETCH_ASSOC);
 
@@ -57,7 +59,7 @@ class Verkoop{
 
 		$sql = "SELECT DISTINCT klanten.klantNaam FROM klanten INNER JOIN verkooporders ON klanten.klantId = verkooporders.klantId";
 
-		$stmt = $conn->query($sql);
+		$stmt = self::$conn->query($sql);
 
         $klanten = $stmt->fetchALL(PDO::FETCH_ASSOC);
 
@@ -68,7 +70,7 @@ class Verkoop{
 
 		$sql = "SELECT * FROM inkooporders WHERE $data =" ;
 
-		$stmt = $conn->prepare($sql);
+		$stmt = self::$conn->prepare($sql);
 
         $stmt->execute();
 	}
@@ -76,7 +78,7 @@ class Verkoop{
 	public function deleteVerkoop($nr, $conn){
 
 		$sql = "DELETE FROM verkooporders WHERE verkOrdId = '$nr'";
-		$stmt = $conn->prepare($sql);
+		$stmt = self::$conn->prepare($sql);
         $stmt->execute();
 
         echo '<script>alert("Verkooporder verwijderd")</script>';
@@ -88,7 +90,7 @@ class Verkoop{
 
  		$sql = "UPDATE verkooporders SET Klantid = '$klantid', artId = '$artId', verkOrdDatum = '$verkOrdDatum', verkOrdStatus = '$verkOrdStatus' WHERE verkOrdId  = '$id'";
 
-		$stmt = $conn->prepare($sql);
+		$stmt = self::$conn->prepare($sql);
 
     	$stmt->execute();
  	}
