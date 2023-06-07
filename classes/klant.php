@@ -16,27 +16,16 @@ class Klant extends Database{
 
 	}
 
-	public function selectKlant($conn){
-
-		$sql = "SELECT * FROM `klanten`";
-
-		$stmt = self::$conn->query($sql);
-
-        $klant = $stmt->fetchALL(PDO::FETCH_ASSOC);
-
-        return $klant;
+	public function selectKlant(){
+		$lijst = self::$conn->query("select * from 	klanten")->fetchAll();
+		return $lijst;
         
 	}
 
-	public function getKlanten($conn){
+	public function getKlanten(){
 
-		$sql = "SELECT DISTINCT klantNaam FROM klanten";
-
-		$stmt = self::$conn->query($sql);
-
-        $klanten = $stmt->fetchALL(PDO::FETCH_ASSOC);
-
-   	   return $klanten;
+		$lijst = self::$conn->query("select * from 	klanten")->fetchAll();
+		return $lijst;
 	}
 
 	public function getKlant($conn, $klant){
@@ -86,6 +75,29 @@ class Klant extends Database{
    	 		echo '<script>alert("Er staat nog een verkooporder open onder deze klant")</script>';
    	 	}
  	}
+
+	 public function showTable($lijst){
+		
+		
+		echo "<table>";
+		echo "<tr><th>ID</th><th>Naam</th><th>Email</th><th>Adres</th><th>Postcode</th><th>Woonplaats</th></tr>";
+		foreach($lijst as $row) {
+			
+			
+			echo "<tr>";
+			echo "<td>" . $row["klantId"] . "</td>";
+			echo "<td>" . $row["klantNaam"] . "</td>";
+			echo "<td>" . $row["klantEmail"] . "</td>";
+			echo "<td>" . $row["klantAdres"] . "</td>";
+			echo "<td>" . $row["klantPostcode"] . "</td>";
+			echo "<td>" . $row["klantWoonplaats"] . "</td>";
+			echo "</tr>";
+			
+		
+			
+		}
+		echo "</table>";
+	}
 
 }
 

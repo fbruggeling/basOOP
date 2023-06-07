@@ -18,15 +18,10 @@ class Verkoop extends Database{
 
 	}
 
-	public function selectVerkoop($conn){
+	public function selectVerkoop(){
 
-		$sql = "SELECT * FROM `verkooporders`";
-
-		$stmt = self::$conn->query($sql);
-
-        $verkoop = $stmt->fetchALL(PDO::FETCH_ASSOC);
-
-        $this->printTable($verkoop);
+		$lijst = self::$conn->query("select * from 	verkooporders")->fetchAll();
+		return $lijst;
         
 	}
 
@@ -94,5 +89,28 @@ class Verkoop extends Database{
 
     	$stmt->execute();
  	}
+
+	 public function showTable($lijst){
+		
+		
+		echo "<table>";
+		echo "<tr><th>VerkoopID</th><th>Klant ID</th><th>Artikel ID</th><th>Datum</th><th>Aantal</th><th>Status</th></tr>";
+		foreach($lijst as $row) {
+			
+			
+			echo "<tr>";
+			echo "<td>" . $row["verkOrdId"] . "</td>";
+			echo "<td>" . $row["klantId"] . "</td>";
+			echo "<td>" . $row["artId"] . "</td>";
+			echo "<td>" . $row["verkOrdDatum"] . "</td>";
+			echo "<td>" . $row["verkOrdBestAantal"] . "</td>";
+			echo "<td>" . $row["verkOrdStatus"] . "</td>";
+			echo "</tr>";
+			
+		
+			
+		}
+		echo "</table>";
+	}
 }
 ?>

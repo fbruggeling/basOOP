@@ -1,17 +1,8 @@
 <?php
 
-include "conn.php";
-include "classes/verkoop.php";
+include 'classes/verkoop.php';
 
-$conn = dbConnect();
-$verkoop = new Verkoop();
-$table = $verkoop->selectVerkoop($conn);
+$verkoop = new Verkoop(); 
+$lijst = $verkoop->selectVerkoop();
 
-if(!empty($_POST['verwijderen'])){
-	$verkoop->updateVerkoop($_POST['verkoopId'], $conn);
-}
-
-
-echo "<a href='index.php'>Home</a>";
-
-?>
+$verkoop->showTable($lijst);
