@@ -3,8 +3,8 @@
 include "classes/InkooporderForm.php";
 include 'classes/inkoop.php';
 
-$db = new Database();
-$form = new InkooporderForm($db);
+
+$form = new InkooporderForm();
 $form->generateForm();
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
@@ -14,7 +14,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $aantal = $_POST["aantal"];
 
     $inkoop = new Inkoop();
-    $inkoop->insertInkoop($conn, $levId, $artId, $aantal);
+    $inkoop->insertInkoop($levId, $artId, $aantal);
 
 }
 
@@ -34,8 +34,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 //$verkoop->insertVerkoop($conn, $klantId, $artId, $aantal);
 //}
 
-if(isset($verkoop) && $verkoop == true){
-    echo '<script>alert("VerkoopOrder toegevoegd")</script>';
+if(isset($inkoop) && $inkoop == true){
+    echo '<script>alert("Inkoop toegevoegd")</script>';
     echo "<script> location.replace('index.php'); </script>";
 }
 

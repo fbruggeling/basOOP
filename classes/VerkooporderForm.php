@@ -1,17 +1,17 @@
 <?php
-include "Database.php";
+require 'Database.php';
 class VerkooporderForm extends Database
 {
     public function getKlanten() {
         $query = "SELECT * FROM klanten";
-        $result = self::$conn->executeQuery($query);
-        return self::$conn->fetchAll($result);
+        $result = self::$conn->query($query);
+        return $result->fetchAll();
     }
 
     public function getArtikelen() {
         $query = "SELECT * FROM artikelen";
-        $result = self::$conn->executeQuery($query);
-        return self::$conn->fetchAll($result);
+        $result = self::$conn->query($query);
+        return $result->fetchAll();
     }
 
     public function generateForm() {

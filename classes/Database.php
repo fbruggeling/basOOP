@@ -1,16 +1,23 @@
 <?php
 
 class Database {
-    private $host = "localhost";
-    private $username = "root";
-    private $password = "";
-    private $dbname = "bas";
-    protected static $conn = NULL;
-
-    public function __construct() {
-        if (!self::$conn) {
+   // protected: binnen class en subclasses
+	// static omdat de connectie bewaard blijft
+	protected static $conn = NULL;
+	
+	private  $servername = "localhost" ;
+	private 	$dbname = "bas" ;
+	private 	$username = "root" ;
+	private 	$password = "" ;	
+	
+	
+	// Methods
+	public function __construct(){
+			
+		// Test of de connectie al eerder gedaan is. Daarom static variabele
+		if (!self::$conn) {
 			try{
-				 self::$conn = new PDO ("mysql:host=$this->host;
+				 self::$conn = new PDO ("mysql:host=$this->servername;
 						dbname=$this->dbname",
 						$this->username,
 						$this->password) ;
@@ -25,14 +32,14 @@ class Database {
 			}
 		} else {
 			echo "Database is al geconnected<br>";
-		}    
+		}
+	}
+
+    /* public function executeQuery($query) {
+        return self::$conn->query($query);
     }
 
-    //public function executeQuery($query) {
-    //    return self::$conn->query($query);
-    //}
-
-    //public function fetchAll($result) {
-    //    return $result->fetchAll();
-    //}
+    public function fetchAll($result) {
+        return $result->fetchAll();
+    } */
 }

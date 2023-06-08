@@ -1,17 +1,17 @@
 <?php
-include "Database.php";
+require 'Database.php';
 class InkooporderForm extends Database
 {
     public function getLeveranciers() {
         $query = "SELECT * FROM leveranciers";
-        $result = self::$conn->executeQuery($query);
-        return self::$conn->fetchAll($result);
+        $result = self::$conn->query($query);
+        return $result->fetchAll();
     }
 
     public function getArtikelen() {
         $query = "SELECT * FROM artikelen";
-        $result = self::$conn->executeQuery($query);
-        return self::$conn>fetchAll($result);
+        $result = self::$conn->query($query);
+        return $result->fetchAll();
     }
 
     public function generateForm() {

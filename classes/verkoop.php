@@ -1,6 +1,6 @@
 <?php
 
-include 'Database.php';
+require_once 'Database.php';
 
 class Verkoop extends Database{
 
@@ -50,7 +50,7 @@ class Verkoop extends Database{
 		echo "</table>";
 	}
 
-	public function getKlanten($conn){
+	public function getKlanten(){
 
 		$sql = "SELECT DISTINCT klanten.klantNaam FROM klanten INNER JOIN verkooporders ON klanten.klantId = verkooporders.klantId";
 
@@ -61,7 +61,7 @@ class Verkoop extends Database{
    	   return $klanten;
 	}
 
-	public function getKlant($conn, $data){
+	public function getKlant($data){
 
 		$sql = "SELECT * FROM inkooporders WHERE $data =" ;
 
@@ -70,7 +70,7 @@ class Verkoop extends Database{
         $stmt->execute();
 	}
 
-	public function deleteVerkoop($nr, $conn){
+	public function deleteVerkoop($nr){
 
 		$sql = "DELETE FROM verkooporders WHERE verkOrdId = '$nr'";
 		$stmt = self::$conn->prepare($sql);
@@ -81,7 +81,7 @@ class Verkoop extends Database{
         echo "<script> location.replace('selectVerkoop.php'); </script>";
  	}
 
- 	public function updateVerkoop($id, $klantid, $artId, $verkOrdDatum, $verkOrdStatus, $conn){
+ 	public function updateVerkoop($id, $klantid, $artId, $verkOrdDatum, $verkOrdStatus){
 
  		$sql = "UPDATE verkooporders SET Klantid = '$klantid', artId = '$artId', verkOrdDatum = '$verkOrdDatum', verkOrdStatus = '$verkOrdStatus' WHERE verkOrdId  = '$id'";
 
