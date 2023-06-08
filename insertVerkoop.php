@@ -8,7 +8,7 @@ $form->generateForm();
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     // Retrieve form data
-    $levId = $_POST["klant"];
+    $klantId = $_POST["klant"];
     $artId = $_POST["artikel"];
     $aantal = $_POST["aantal"];
 
