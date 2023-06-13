@@ -35,6 +35,17 @@ class Database {
 		}
 	}
 
+	
+
+	public function searchCustomerById($klantId) {
+        $query = "SELECT * FROM klanten WHERE klantId = :id";
+        $stmt = self::$conn->prepare($query);
+        $stmt->bindParam(':id', $klantId);
+        $stmt->execute();
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $result;
+    }
+
     /* public function executeQuery($query) {
         return self::$conn->query($query);
     }

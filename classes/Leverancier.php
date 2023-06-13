@@ -2,9 +2,9 @@
 
 include 'Database.php';
 
-class Artikel extends Database{
+class Leverancier extends Database{
 
-	public function insertArtikel($conn, $naam, $inkoop, $verkoop, $voorraad, $minVoorraad, $maxVoorraad, $locatie, $levId){
+	public function insertLeverancier($conn, $naam, $inkoop, $verkoop, $voorraad, $minVoorraad, $maxVoorraad, $locatie, $levId){
 
         $sql = "INSERT INTO klanten (artOmschrijving, artInkoop, artVerkoop, arVoorraad, artMinVoorraad, artMaxVoorraad, artLocatie, levId) VALUES ('$naam', '$inkoop', '$verkoop', '$voorraad', '$minVoorraad', '$maxVoorraad', '$levId')";
 
@@ -16,14 +16,14 @@ class Artikel extends Database{
 
 	}
 
-	public function selectArtikel(){
+	public function selectLeverancier(){
 
 		$lijst = self::$conn->query("select * from 	artikelen")->fetchAll();
 		return $lijst;
         
 	}
 
-	public function getArtikelen(){
+	public function getLeveranciers(){
 
 		$sql = "SELECT DISTINCT klantNaam FROM klanten";
 
@@ -34,7 +34,7 @@ class Artikel extends Database{
    	   return $klanten;
 	}
 
-	public function getArtiekl($klant){
+	public function getLeverancier($klant){
 
 		$sql = "SELECT * FROM klanten WHERE klantnaam = '$klant'";
 
@@ -67,38 +67,13 @@ class Artikel extends Database{
    	   return $klanten;
 	}
 
-	public function deleteArtikel($artId){
+	public function deleteLeverancier($levId){
 
-		$sql = "DELETE FROM artikelen WHERE artId = '$artId'";
+		$sql = "DELETE FROM leveranciers WHERE levId = '$levId'";
 		$stmt = self::$conn->prepare($sql);
         $stmt->execute();
  	}
 
-	public function showTable($lijst){
-		
-		
-		echo "<table>";
-		echo "<tr><th>ID</th><th>Naam</th><th>Inkoop</th><th>Verkoop</th><th>Voorraad</th><th>MinVoorraad</th><th>MaxVoorraad</th><th>Locatie</th><th>levId</th></th></tr>";
-		foreach($lijst as $row) {
-			
-			
-			echo "<tr>";
-			echo "<td>" . $row["artId"] . "</td>";
-			echo "<td>" . $row["artOmschrijving"] . "</td>";
-			echo "<td>" . $row["artInkoop"] . "</td>";
-			echo "<td>" . $row["artVerkoop"] . "</td>";
-			echo "<td>" . $row["artVoorraad"] . "</td>";
-			echo "<td>" . $row["artMinVoorraad"] . "</td>";
-			echo "<td>" . $row["artMaxVoorraad"] . "</td>";
-			echo "<td>" . $row["artLocatie"] . "</td>";
-			echo "<td>" . $row["levId"] . "</td>";
-			echo "</tr>";
-			
-		
-			
-		}
-		echo "</table>";
-	}
 
 }
 ?>

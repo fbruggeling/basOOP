@@ -50,15 +50,15 @@ class Verkoop extends Database{
 		echo "</table>";
 	}
 
-	public function getKlanten(){
+	public function getOrders(){
 
-		$sql = "SELECT DISTINCT klanten.klantNaam FROM klanten INNER JOIN verkooporders ON klanten.klantId = verkooporders.klantId";
+		$sql = "SELECT * FROM verkooporders";
 
 		$stmt = self::$conn->query($sql);
 
-        $klanten = $stmt->fetchALL(PDO::FETCH_ASSOC);
+        $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-   	   return $klanten;
+   	   return $orders;
 	}
 
 	public function getKlant($data){
@@ -70,15 +70,23 @@ class Verkoop extends Database{
         $stmt->execute();
 	}
 
-	public function deleteVerkoop($nr){
+	public function getKlanten(){
 
-		$sql = "DELETE FROM verkooporders WHERE verkOrdId = '$nr'";
+		$sql = "SELECT DISTINCT klanten.klantNaam FROM klanten INNER JOIN verkooporders ON klanten.klantId = verkooporders.klantId";
+
+		$stmt = self::$conn->query($sql);
+
+        $klanten = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+   	   return $klanten;
+	}
+
+	public function deleteVerkoop($verkOrdID){
+
+		$sql = "DELETE FROM verkooporders WHERE verkOrdId = '$verkOrdId'";
 		$stmt = self::$conn->prepare($sql);
         $stmt->execute();
 
-        echo '<script>alert("Verkooporder verwijderd")</script>';
-
-        echo "<script> location.replace('selectVerkoop.php'); </script>";
  	}
 
  	public function updateVerkoop($id, $klantid, $artId, $verkOrdDatum, $verkOrdStatus){
@@ -112,5 +120,20 @@ class Verkoop extends Database{
 		}
 		echo "</table>";
 	}
+
+	public function getOrderList() {
+        $query = "SELECT * FROM verkooporders";
+        $stmt = self::$conn->query($query);
+        return $stmt->fetchAll();
+    }
+    
+    public function updateOrderStatus($orderId, $statusId) {
+        $query = "UPDATE verkooporders SET verkOrdStatus = :status WHERE verkOrdId = :id";
+        $stmt = self::$conn->prepare($query);
+        $stmt->bindParam(':status', $statusId, PDO::PARAM_INT);
+        $stmt->bindParam(':id', $orderId, PDO::PARAM_INT);
+        $stmt->execute();
+    }
+
+	
 }
-?>

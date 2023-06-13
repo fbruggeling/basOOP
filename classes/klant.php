@@ -22,22 +22,10 @@ class Klant extends Database{
         
 	}
 
-	public function getKlanten(){
+	public function searchCustomerById($klantId) {
+        return self::$conn->searchCustomerById($klantId);
+    }
 
-		$lijst = self::$conn->query("select * from 	klanten")->fetchAll();
-		return $lijst;
-	}
-
-	public function getKlant($conn, $klant){
-
-		$sql = "SELECT * FROM klanten WHERE klantnaam = '$klant'";
-
-		$stmt = self::$conn->query($sql);
-
-        $klanten = $stmt->fetchALL(PDO::FETCH_ASSOC);
-
-   	   return $klanten;
-	}
 
 	public function getIds($conn){
 
@@ -61,19 +49,13 @@ class Klant extends Database{
    	   return $klanten;
 	}
 
-	public function deleteKlant($nr, $conn){
+	public function deleteKlant($klantId){
 
-		try{
-			$sql = "DELETE FROM `Klanten` WHERE `klantId` = '$nr'";
-			$stmt = self::$conn->prepare($sql);
-        	$stmt->execute();
-
-        	echo '<script>alert("Klant verwijderd")</script>';
-
-       	 	echo "<script> location.replace('selectKlant.php'); </script>";
-   	 	} catch(Exception) {
-   	 		echo '<script>alert("Er staat nog een verkooporder open onder deze klant")</script>';
-   	 	}
+		$sql = "DELETE FROM klanten WHERE klantId = '$klantId'";
+		$stmt = self::$conn->prepare($sql);
+        $stmt->execute();
+   	 	
+			
  	}
 
 	 public function showTable($lijst){
