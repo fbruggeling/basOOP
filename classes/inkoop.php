@@ -30,9 +30,9 @@ class Inkoop extends Database{
 
 	}
 
-	public function deleteInkoop($conn, $data){
+	public function deleteInkoop($inkOrdId){
 
-		$sql = "DELETE * FROM inkooporders WHERE inkOrdId = '$data'";
+		$sql = "DELETE * FROM inkooporders WHERE inkOrdId = '$inkOrdId'";
 
 		$stmt = self::$conn->prepare($sql);
 
