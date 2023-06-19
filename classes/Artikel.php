@@ -4,18 +4,6 @@ include 'Database.php';
 
 class Artikel extends Database{
 
-	public function insertArtikel($conn, $naam, $inkoop, $verkoop, $voorraad, $minVoorraad, $maxVoorraad, $locatie, $levId){
-
-        $sql = "INSERT INTO klanten (artOmschrijving, artInkoop, artVerkoop, arVoorraad, artMinVoorraad, artMaxVoorraad, artLocatie, levId) VALUES ('$naam', '$inkoop', '$verkoop', '$voorraad', '$minVoorraad', '$maxVoorraad', '$levId')";
-
-		$stmt = self::$conn->prepare($sql);
-
-        $stmt->execute();
-
-        return true;
-
-	}
-
 	public function selectArtikel(){
 
 		$lijst = self::$conn->query("select * from 	artikelen")->fetchAll();
@@ -23,81 +11,62 @@ class Artikel extends Database{
         
 	}
 
-	public function getArtikelen(){
+	public function updateArtikel2($artId, $artOmschrijving, $artInkoop, $artVerkoop, $artVoorraad, $artMinVoorraad, $artMaxVoorraad, $artLocatie) {
+		$sql = "update klanten 
+			set artOmschrijving = '$artOmschrijving', artInkoop = '$artInkoop', artVerkoop = '$artVerkoop', artVoorraad = '$artVoorraad', artMinVoorraad = '$artMinVoorraad', artMaxVoorraad = '$artMaxVoorraad', artLocatie = '$artLocatie' 
+			WHERE artId = '$artId'";
 
-		$sql = "SELECT DISTINCT klantNaam FROM klanten";
-
-		$stmt = self::$conn->query($sql);
-
-        $klanten = $stmt->fetchALL(PDO::FETCH_ASSOC);
-
-   	   return $klanten;
-	}
-
-	public function getArtiekl($klant){
-
-		$sql = "SELECT * FROM klanten WHERE klantnaam = '$klant'";
-
-		$stmt = self::$conn->query($sql);
-
-        $klanten = $stmt->fetchALL(PDO::FETCH_ASSOC);
-
-   	   return $klanten;
-	}
-
-	public function getIds(){
-
-		$sql = "SELECT klantId FROM klanten";
-
-		$stmt = self::$conn->query($sql);
-
-        $klanten = $stmt->fetchALL(PDO::FETCH_ASSOC);
-
-   	   return $klanten;
-	}
-
-	public function getId($id){
-
-		$sql = "SELECT * FROM klanten WHERE `klantId` = '$id'";
-
-		$stmt = self::$conn->query($sql);
-
-        $klanten = $stmt->fetchALL(PDO::FETCH_ASSOC);
-
-   	   return $klanten;
+		$stmt = self::$conn->prepare($sql);
+		$stmt->execute(); 
+		return ($stmt->rowCount() == 1) ? true : false;	
 	}
 
 	public function deleteArtikel($artId){
 
-		$sql = "DELETE FROM artikelen WHERE artId = '$artId'";
+		$sql = "delete from klanten where artId = '$artId'";
 		$stmt = self::$conn->prepare($sql);
-        $stmt->execute();
+		$stmt->execute();
+      	return ($stmt->rowCount() == 1) ? true : false;
+   	 	
+			
  	}
 
 	public function showTable($lijst){
 		
 		
-		echo "<table>";
-		echo "<tr><th>ID</th><th>Naam</th><th>Inkoop</th><th>Verkoop</th><th>Voorraad</th><th>MinVoorraad</th><th>MaxVoorraad</th><th>Locatie</th><th>levId</th></th></tr>";
-		foreach($lijst as $row) {
+		$txt = "<table border=1px>";
+		$txt .= "<tr><th>ID</th><th>Omschrijving</th><th>Inkoop</th><th>Verkoop</th><th>Voorraad</th><th>MinVoorraad</th><th>MaxVoorraad</th><th>LeverancierId</th></tr>";
+		foreach($lijst as $row){
+			$txt .= "<tr>";
+			$txt .=  "<td>" . $row["artId"] . "</td>";
+			$txt .=  "<td>" . $row["artOmschrijving"] . "</td>";
+			$txt .=  "<td>" . $row["artInkoop"] . "</td>";
+			$txt .=  "<td>" . $row["artVerkoop"] . "</td>";
+			$txt .=  "<td>" . $row["artVoorraad"] . "</td>";
+			$txt .=  "<td>" . $row["artMinVoorraad"] . "</td>";
+			$txt .=  "<td>" . $row["artMaxVoorraad"] . "</td>";
+			$txt .=  "<td>" . $row["artLocatie"] . "</td>";
+			$txt .=  "<td>" . $row["levId"] . "</td>";
 			
-			
-			echo "<tr>";
-			echo "<td>" . $row["artId"] . "</td>";
-			echo "<td>" . $row["artOmschrijving"] . "</td>";
-			echo "<td>" . $row["artInkoop"] . "</td>";
-			echo "<td>" . $row["artVerkoop"] . "</td>";
-			echo "<td>" . $row["artVoorraad"] . "</td>";
-			echo "<td>" . $row["artMinVoorraad"] . "</td>";
-			echo "<td>" . $row["artMaxVoorraad"] . "</td>";
-			echo "<td>" . $row["artLocatie"] . "</td>";
-			echo "<td>" . $row["levId"] . "</td>";
-			echo "</tr>";
-			
-		
-			
+			//Update
+			// Wijzig knopje
+        	$txt .=  "<td>";
+			$txt .= " 
+            <form method='post' action='updateArtikel.php?artId=$row[artId]' >       
+                <button name='update'>Wzg</button>	 
+            </form> </td>";
+
+
+			//Delete
+			$txt .=  "<td>";
+			$txt .= " 
+            <form method='post' action='deleteArtikel.php?artId=$row[artId]' >       
+                <button name='verwijderen'>Verwijderen</button>	 
+            </form> </td>";	
+			$txt .= "</tr>";
 		}
-		echo "</table>";
+		$txt .= "</table>";
+		echo $txt;
 	}
 
 }

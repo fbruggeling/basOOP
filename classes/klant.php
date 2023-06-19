@@ -1,8 +1,24 @@
 <?php 
 
-include 'Database.php';
+include_once 'classes/Database.php';
 
 class Klant extends Database{
+
+	public $klantId;
+	public $klantNaam;
+	public $klantEmail;
+	public $klantAdres;
+	public $klantPostcode;
+	public $klantWoonplaats;
+
+	public function setObject($klantId, $klantNaam, $klantEmail, $klantAdres, $klantPostcode, $klantWoonplaats){
+		$this->klantId = $klantId;
+		$this->klantNaam = $klantNaam;
+		$this->klantEmail = $klantEmail;
+		$this->klantAdres = $klantAdres;
+		$this->klantPostcode = $klantPostcode;
+		$this->klantWoonplaats = $klantWoonplaats;
+	}
 
 	public function insertKlant($naam, $mail, $adres, $postcode, $woonplaats){
 
@@ -26,34 +42,59 @@ class Klant extends Database{
         return self::$conn->searchCustomerById($klantId);
     }
 
+	public function getKlant($klantId) {
 
-	public function getIds($conn){
-
-		$sql = "SELECT klantId FROM klanten";
-
-		$stmt = self::$conn->query($sql);
-
-        $klanten = $stmt->fetchALL(PDO::FETCH_ASSOC);
-
-   	   return $klanten;
+		$sql = "select * from klanten where klantId = '$klantId'";
+		$query = self::$conn->prepare($sql);
+		$query->execute();
+		return $query->fetch();
 	}
 
-	public function getId($conn, $id){
+	public function updateKlant(){
+		// Voor deze functie moet eerst een setObject aangeroepen worden om $this te vullen
+		$sql = "update klanten 
+			set klantNaam = :klantNaam, klantEmail = :klantEmail, klantAdres = :klantAdres, klantPostcode = :klantPostcode 
+			WHERE klantId = :klantId";
 
-		$sql = "SELECT * FROM klanten WHERE `klantId` = '$id'";
+		$stmt = self::$conn->prepare($sql);
+		$stmt->execute((array)$this);
+		return ($stmt->rowCount() == 1) ? true : false;		
+	}
 
-		$stmt = self::$conn->query($sql);
+	public function updateKlant2($klantId, $klantNaam, $klantEmail, $klantAdres, $klantPostcode, $klantWoonplaats) {
+		$sql = "update klanten 
+			set klantNaam = '$klantNaam', klantEmail = '$klantEmail', klantAdres = '$klantAdres', klantPostcode = '$klantPostcode', klantWoonplaats = '$klantWoonplaats' 
+			WHERE klantId = '$klantId'";
 
-        $klanten = $stmt->fetchALL(PDO::FETCH_ASSOC);
+		$stmt = self::$conn->prepare($sql);
+		$stmt->execute(); 
+		return ($stmt->rowCount() == 1) ? true : false;	
+	}
 
-   	   return $klanten;
+	public function updateKlantSanitized($klantId, $klantNaam, $klantEmail, $klantAdres, $klantPostcode, $klantWoonplaats){
+
+		$sql = "update acteurs 
+			set klantNaam = :klantNaam, klantEmail = :klantEmail, klantAdres = :klantAdres, klantPostcode = :klantPostcode, klantWoonplaats = :klantWoonplaats 
+			WHERE klantId = :klantId";
+			
+		// PDO sanitize automatisch in de prepare
+		$stmt = self::$conn->prepare($sql);
+		$stmt->execute([
+			'klantNaam' => $klantNaam,
+			'klantEmail'=> $klantEmail,
+			'klantAdres'=> $klantAdres,
+			'klantPostcode'=> $klantPostcode,
+			'klantWoonplaats'=> $klantWoonplaats,
+			'klantId'=> $klantId
+		]);  
 	}
 
 	public function deleteKlant($klantId){
 
-		$sql = "DELETE FROM klanten WHERE klantId = '$klantId'";
+		$sql = "delete from klanten where klantId = '$klantId'";
 		$stmt = self::$conn->prepare($sql);
-        $stmt->execute();
+		$stmt->execute();
+      	return ($stmt->rowCount() == 1) ? true : false;
    	 	
 			
  	}
@@ -61,24 +102,36 @@ class Klant extends Database{
 	 public function showTable($lijst){
 		
 		
-		echo "<table>";
-		echo "<tr><th>ID</th><th>Naam</th><th>Email</th><th>Adres</th><th>Postcode</th><th>Woonplaats</th></tr>";
-		foreach($lijst as $row) {
+		$txt = "<table border=1px>";
+		$txt .= "<tr><th>ID</th><th>Naam</th><th>Email</th><th>Adres</th><th>Postcode</th><th>Woonplaats</th></tr>";
+		foreach($lijst as $row){
+			$txt .= "<tr>";
+			$txt .=  "<td>" . $row["klantId"] . "</td>";
+			$txt .=  "<td>" . $row["klantNaam"] . "</td>";
+			$txt .=  "<td>" . $row["klantEmail"] . "</td>";
+			$txt .=  "<td>" . $row["klantAdres"] . "</td>";
+			$txt .=  "<td>" . $row["klantPostcode"] . "</td>";
+			$txt .=  "<td>" . $row["klantWoonplaats"] . "</td>";
 			
-			
-			echo "<tr>";
-			echo "<td>" . $row["klantId"] . "</td>";
-			echo "<td>" . $row["klantNaam"] . "</td>";
-			echo "<td>" . $row["klantEmail"] . "</td>";
-			echo "<td>" . $row["klantAdres"] . "</td>";
-			echo "<td>" . $row["klantPostcode"] . "</td>";
-			echo "<td>" . $row["klantWoonplaats"] . "</td>";
-			echo "</tr>";
-			
-		
-			
+			//Update
+			// Wijzig knopje
+        	$txt .=  "<td>";
+			$txt .= " 
+            <form method='post' action='updateKlant.php?klantId=$row[klantId]' >       
+                <button name='update'>Wzg</button>	 
+            </form> </td>";
+
+
+			//Delete
+			$txt .=  "<td>";
+			$txt .= " 
+            <form method='post' action='deleteKlant.php?klantId=$row[klantId]' >       
+                <button name='verwijderen'>Verwijderen</button>	 
+            </form> </td>";	
+			$txt .= "</tr>";
 		}
-		echo "</table>";
+		$txt .= "</table>";
+		echo $txt;
 	}
 
 }

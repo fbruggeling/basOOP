@@ -1,32 +1,14 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>deleten op klant ID</title>
-</head>
-<body>
+<?php
 
-<h2>deleten op klant ID</h2>
-    <form method="POST" action="deleteKlant.php">
-        <input type="text" name="klantId" placeholder="Voer klant ID in">
-        <input type="submit" value="submit">
-    </form>
-
-<?php 
-
-if(isset($_POST["submit"])){
+if(isset($_POST["verwijderen"])){
 	include 'classes/Klant.php';
 	
-
-	$klant = new Klant();
-
-	$klantId = $_POST["klantId"];
+	// Maak een object Acteur
+	$klant = new Klant;
 	
-
-	$klant->deleteKlant($klantId);
+	// Delete Acteur op basis van NR
+	$klant->deleteKlant($_GET["klantId"]);
 	echo '<script>alert("Klant verwijderd")</script>';
 	echo "<script> location.replace('index.php'); </script>";
 }
 ?>
-
-</body>
-</html>

@@ -1,32 +1,14 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>deleten op verkooporder ID</title>
-</head>
-<body>
+<?php
 
-<h2>deleten op Verkooporder ID</h2>
-    <form method="POST" action="deleteVerkoop.php">
-        <input type="text" name="verkOrdId" placeholder="Voer Verkooporder ID in">
-        <input type="submit" value="submit">
-    </form>
-
-<?php 
-
-if(isset($_POST["submit"])){
+if(isset($_POST["verwijderen"])){
 	include 'classes/Verkoop.php';
 	
-
-	$verkoop = new Verkoop();
-
-	$verkOrdId = $_POST["verkOrdId"];
+	// Maak een object Acteur
+	$verkoop = new verkoop;
 	
-
-	$verkoop->deleteVerkoop($verkOrdId);
-	echo '<script>alert("Verkooporder verwijderd")</script>';
+	// Delete Acteur op basis van NR
+	$verkoop->deleteVerkoop($_GET["verkOrdId"]);
+	echo '<script>alert("VerkoopOrder verwijderd")</script>';
 	echo "<script> location.replace('index.php'); </script>";
 }
 ?>
-
-</body>
-</html>

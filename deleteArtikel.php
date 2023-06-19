@@ -1,32 +1,14 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>deleten op Artikel ID</title>
-</head>
-<body>
+<?php
 
-<h2>deleten op Artikel ID</h2>
-    <form method="POST" action="deleteArtikel.php">
-        <input type="text" name="artId" placeholder="Voer Artikel ID in">
-        <input type="submit" value="submit">
-    </form>
-
-<?php 
-
-if(isset($_POST["submit"])){
+if(isset($_POST["verwijderen"])){
 	include 'classes/Artikel.php';
 	
-
+	// Maak een object Acteur
 	$artikel = new Artikel;
-
-	$artId = $_POST["artId"];
 	
-
-	$artikel->deleteArtikel($artId);
+	// Delete Acteur op basis van NR
+	$artikel->deleteArtikel($_GET["artId"]);
 	echo '<script>alert("Artikel verwijderd")</script>';
 	echo "<script> location.replace('index.php'); </script>";
 }
 ?>
-
-</body>
-</html>

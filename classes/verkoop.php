@@ -70,6 +70,14 @@ class Verkoop extends Database{
         $stmt->execute();
 	}
 
+	public function getVerkoop($verkOrdId) {
+
+		$sql = "select * from verkooporders where verkOrdId = '$verkOrdId'";
+		$query = self::$conn->prepare($sql);
+		$query->execute();
+		return $query->fetch();
+	}
+
 	public function getKlanten(){
 
 		$sql = "SELECT DISTINCT klanten.klantNaam FROM klanten INNER JOIN verkooporders ON klanten.klantId = verkooporders.klantId";
@@ -83,9 +91,10 @@ class Verkoop extends Database{
 
 	public function deleteVerkoop($verkOrdID){
 
-		$sql = "DELETE FROM verkooporders WHERE verkOrdId = '$verkOrdId'";
+		$sql = "delete from verkooporders where verkOrdId = '$verkOrdId'";
 		$stmt = self::$conn->prepare($sql);
-        $stmt->execute();
+		$stmt->execute();
+      	return ($stmt->rowCount() == 1) ? true : false;
 
  	}
 
@@ -98,27 +107,47 @@ class Verkoop extends Database{
     	$stmt->execute();
  	}
 
+	public function updateVerkoop2($verkOrdId, $klantId, $artId, $verkOrdBestAantal, $verkOrdDatum, $verkOrdStatus) {
+		$sql = "update verkooporders', klantId = '$klantId', artId = '$artId', verkOrdBestAantal = '$verkOrdBestAantal', verkOrDatum = '$verkOrdDatum', verkOrdStatus = '$verkOrdStatus' 
+			WHERE verkOrdId = '$verkOrdId'";
+
+		$stmt = self::$conn->prepare($sql);
+		$stmt->execute(); 
+		return ($stmt->rowCount() == 1) ? true : false;	
+	}
+
 	 public function showTable($lijst){
 		
-		
-		echo "<table>";
-		echo "<tr><th>VerkoopID</th><th>Klant ID</th><th>Artikel ID</th><th>Datum</th><th>Aantal</th><th>Status</th></tr>";
-		foreach($lijst as $row) {
+		$txt = "<table border=1px>";
+		$txt .= "<tr><th>ID</th><th>klantId</th><th>artikelId</th><th>Datum</th><th>aantal</th><th>Status</th></tr>";
+		foreach($lijst as $row){
+			$txt .= "<tr>";
+			$txt .=  "<td>" . $row["verkOrdId"] . "</td>";
+			$txt .=  "<td>" . $row["klantId"] . "</td>";
+			$txt .=  "<td>" . $row["artId"] . "</td>";
+			$txt .=  "<td>" . $row["verkOrdDatum"] . "</td>";
+			$txt .=  "<td>" . $row["verkOrdBestAantal"] . "</td>";
+			$txt .=  "<td>" . $row["verkOrdStatus"] . "</td>";
 			
-			
-			echo "<tr>";
-			echo "<td>" . $row["verkOrdId"] . "</td>";
-			echo "<td>" . $row["klantId"] . "</td>";
-			echo "<td>" . $row["artId"] . "</td>";
-			echo "<td>" . $row["verkOrdDatum"] . "</td>";
-			echo "<td>" . $row["verkOrdBestAantal"] . "</td>";
-			echo "<td>" . $row["verkOrdStatus"] . "</td>";
-			echo "</tr>";
-			
-		
-			
+			//Update
+			// Wijzig knopje
+        	$txt .=  "<td>";
+			$txt .= " 
+            <form method='post' action='updateVerkoop.php?verkOrdId=$row[verkOrdId]' >       
+                <button name='update'>Wzg</button>	 
+            </form> </td>";
+
+
+			//Delete
+			$txt .=  "<td>";
+			$txt .= " 
+            <form method='post' action='deleteVerkoop.php?verkOrdId=$row[verkOrdId]' >       
+                <button name='verwijderen'>Verwijderen</button>	 
+            </form> </td>";	
+			$txt .= "</tr>";
 		}
-		echo "</table>";
+		$txt .= "</table>";
+		echo $txt;
 	}
 
 	public function getOrderList() {
