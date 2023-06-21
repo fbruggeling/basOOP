@@ -18,7 +18,7 @@ class Leverancier extends Database{
 
 	public function selectLeverancier(){
 
-		$lijst = self::$conn->query("select * from 	artikelen")->fetchAll();
+		$lijst = self::$conn->query("select * from 	Leverancier")->fetchAll();
 		return $lijst;
         
 	}

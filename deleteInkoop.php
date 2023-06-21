@@ -6,7 +6,7 @@
 <body>
 
 <h2>deleten op Inkooporder ID</h2>
-    <form method="POST" action="deleteKlant.php">
+    <form method="POST" action="deleteInkoop.php">
         <input type="text" name="inkOrdId" placeholder="Voer Inkooporder ID in">
         <input type="submit" value="submit">
     </form>

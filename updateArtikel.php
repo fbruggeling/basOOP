@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <body>
-<h1>CRUD Acteur</h1>
+<h1>Artikel CRUD</h1>
 <h2>Wijzigen</h2>
 
 <?php
@@ -13,9 +13,7 @@
 
         $artikel->updateArtikel2($_POST['artId'], $_POST['artOmschrijving'], $_POST['artInkoop'], $_POST['artVerkoop'], $_POST['artVoorraad'], $_POST['artMinVoorraad'], $_POST['artMaxVoorraad'], $_POST['artLocatie']);
         echo '<script>alert("Artikel is gewijzigd")</script>';
-        
-        // Toon weer het scherm
-        //include "update_form.php";
+    
     }
 
     if (isset($_GET['artId'])){

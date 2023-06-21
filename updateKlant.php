@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <body>
-<h1>CRUD Klant</h1>
+<h1>Klant CRUD</h1>
 <h2>Wijzigen</h2>
 
 <?php
@@ -13,9 +13,6 @@
 
         $klant->updateKlant2($_POST['klantId'], $_POST['klantNaam'], $_POST['klantEmail'], $_POST['klantAdres'], $_POST['klantPostcode'], $_POST['klantWoonplaats']);
         echo '<script>alert("Klant is gewijzigd")</script>';
-        
-        // Toon weer het scherm
-        //include "update_form.php";
     }
 
     if (isset($_GET['klantId'])){

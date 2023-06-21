@@ -107,8 +107,8 @@ class Verkoop extends Database{
     	$stmt->execute();
  	}
 
-	public function updateVerkoop2($verkOrdId, $klantId, $artId, $verkOrdBestAantal, $verkOrdDatum, $verkOrdStatus) {
-		$sql = "update verkooporders', klantId = '$klantId', artId = '$artId', verkOrdBestAantal = '$verkOrdBestAantal', verkOrDatum = '$verkOrdDatum', verkOrdStatus = '$verkOrdStatus' 
+	public function updateVerkoop2($verkOrdId, $klantId, $artId, $verkOrdBestAantal, $verkOrdDatum) {
+		$sql = "update verkooporders', klantId = '$klantId', artId = '$artId', verkOrdBestAantal = '$verkOrdBestAantal', verkOrDatum = '$verkOrdDatum' 
 			WHERE verkOrdId = '$verkOrdId'";
 
 		$stmt = self::$conn->prepare($sql);
